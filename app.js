@@ -63,7 +63,15 @@ app.ws("/chat/:chatRoomId/:clientId", (ws, req) => {
     });
 });
 
-// Your other routes and middleware can go here...
+app.get('/chat/:chatRoomId', async (req, res) => {
+    try {
+      const chatRoomId = req.params.chatRoomId;
+      const result = await ChatMessage.find({ chatRoomId: chatRoomId });
+      res.status(200).send(result)
+    } catch (error) {
+      res.status(500).send({ error: 'Something went wrong on the server' });
+    }
+  })
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
